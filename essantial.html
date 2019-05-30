@@ -1,0 +1,61 @@
+<html>
+
+    <head>
+            <script
+            src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous"></script>
+    </head>
+
+    <body>
+        <!-- <script src="//api.bitrix.com/api/v1"></script> -->
+
+        <input type="submit" value="Получить компании" onClick="GetCompany()">
+        <input type="submit" value="Получить сделки" onClick="GetDeals()">      
+        
+        <div id="companies">
+            
+        <br><br>
+
+        <div id="deals">
+            
+        </div>
+
+        <script>
+
+            function GetCompany(){
+                var xhr = new XMLHttpRequest();
+
+                container = [{
+                    order: {"DATE CREATE": "ASC"},
+                    filter: {"INDUSTRY": "MANUFACTURING", "COMPANY_TYPE": "CUSTOMER"},
+                    select: ["ID", "TITLE", "CURRENCY_ID", "REVENUE"]
+                }]
+
+                container = JSON.stringify(container);
+                xhr.open('POST', 'https://vz271109.eurodir.ru/rest/9/2k83erthk5c0v35n/crm.company.list', false);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.send(container);
+
+                function callback(result){
+                    companyHTML = '';
+
+                    var data = result.data();
+                    
+                    for (indexCompany in data){
+                        companyHTML += data[indexCompany].ID + ' ' + data[indexCompany].TITLE + ' ' + data[indexCompany].CURRENCY_ID + ' ' + data[indexCompany].REVENUE;
+                    }
+
+                    $('#companies').html(companyHTML);
+
+                }
+            }
+
+            function GetDeals(){
+                var xhr = new XMLHttpRequest();
+                alert("Пока ничего :Р");
+            }
+
+        </script>
+    </body>
+</html>
